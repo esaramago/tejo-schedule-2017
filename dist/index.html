@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Horários tejo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="main.css" />
+</head>
+<body>
+    <div class="o-wrapper">
+        <div class="o-page" aria-hidden="true">
+            <header class="c-header o-row o-row--middle">
+                <h1 class="c-heading-1">Horários Tejo</h1>
+            </header>
+            <main class="o-main">
+                pág 1
+            </main>
+        </div>
+        <div class="o-page is-active" aria-hidden="false">
+            <header class="c-header o-row o-row--middle">
+                <h1 class="c-heading-1">Horários Tejo</h1>
+            </header>
+            <ul class="o-tabs" role="tablist">
+                <li tabindex="0" role="tab" aria-controls="tab-panel-0" class="is-active" data-schedule="weekday-outbound">
+                    <span>Dias úteis</span>
+                </li>
+                <li tabindex="0" role="tab" aria-controls="tab-panel-1" data-schedule="saturday-outbound">
+                    <span>Sábados</span>
+                </li>
+                <li tabindex="0" role="tab" aria-controls="tab-panel-2" data-schedule="sunday-outbound">
+                    <span>Domingos<br>e Feriados</span>
+                </li>
+            </ul>
+            <main class="o-main">
+                <div id="tab-panel-0"></div>
+                <div id="tab-panel-1"></div>
+                <div id="tab-panel-2"></div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDbsZb36x1l4KaRHH-mlAsOxpHeAdwMOwM",
+            authDomain: "tejo-schedule.firebaseapp.com",
+            databaseURL: "https://tejo-schedule.firebaseio.com",
+            projectId: "tejo-schedule",
+            storageBucket: "tejo-schedule.appspot.com",
+            messagingSenderId: "297719841190"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script src="main.js"></script>
+</body>
+</html>

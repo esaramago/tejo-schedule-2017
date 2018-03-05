@@ -1,0 +1,14 @@
+.o-row {
+    display: flex;
+    padding: 0 $gap;
+    > * + * {
+        padding-left: $gap;
+    }
+}
+.o-row--middle {
+    align-items: center;
+}
+
+.o-row__wide {
+    flex: 1;
+}
