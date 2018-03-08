@@ -12,7 +12,8 @@
     text-transform: uppercase;
     list-style: none;
     text-align: center;
-    > * {
+    > li {
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;

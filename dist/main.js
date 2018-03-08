@@ -21,7 +21,7 @@ const App = {
     init() {
         this.getData();
         this.rendertabs();
-        document.querySelector(".js-tabs").addEventListener("click", this.onSelectTab);
+        //document.querySelector(".js-tabs").addEventListener("click", this.onSelectTab);
     },
     getData() {
         var app = this;
@@ -36,7 +36,7 @@ const App = {
         var _this = App;
 
         // get clicked tab
-        var tab;
+        /* var tab;
         if (e.target) {
             if (e.target.nodeName == "li") {
                 tab = e.target;
@@ -44,17 +44,18 @@ const App = {
             else {
                 tab = e.target.closest("li");
             }
-        }
+        } */
         
         for (let i = 0; i < _this.Tabs.length; i++) {
             // hide every tab
             _this.Tabs[i].isSelected = false;
-
+            
             // hide every tabpanel
             document.getElementById("tabpanel" + i).setAttribute("aria-hidden", true);
         }
-
+        
         // get selected tab index
+        var tab = e;
         var tabIndex = tab.getAttribute("data-index");
         
         // show selected tab
@@ -73,7 +74,7 @@ const App = {
         
         for (let i = 0; i < this.Tabs.length; i++) {
             tabs = tabs + `
-                <li role="tab" tabindex="0" id="tab${i}" data-index="${i}" aria-controls="tabpanel${i}" aria-selected="${this.Tabs[i].isSelected}">
+                <li role="tab" tabindex="0" id="tab${i}" data-index="${i}" aria-controls="tabpanel${i}" aria-selected="${this.Tabs[i].isSelected}" onclick="App.onSelectTab(this)">
                     <span>${this.Tabs[i].Label}</span>
                 </li>
             `

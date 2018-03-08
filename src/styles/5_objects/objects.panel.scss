@@ -4,12 +4,10 @@
     right: 0;
     left: 0;
     opacity: 0;
-    //display: none;
     transition: opacity .3s;
     &[aria-hidden=false] {
         position: relative;
         top: 0;
-        //display: block;
         opacity: 1;
     }
 }
