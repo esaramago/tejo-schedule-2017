@@ -19,9 +19,10 @@
         flex: 1;
         border-bottom: 2px solid transparent;
         cursor: pointer;
-        &.is-active {
+        &[aria-selected=true] {
             border-bottom-color: var(--color-secondary-500);
             color: #fff;
+            pointer-events: none;
         }
     }
 }
