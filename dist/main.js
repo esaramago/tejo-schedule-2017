@@ -149,7 +149,6 @@ const App = {
             }
         }
 
-        
     },
     getNextScheduleTime() {
 
@@ -170,7 +169,7 @@ const App = {
             if (currentTime < scheduleTime) {
                 
                 this.Next.TimeSchedule = time;
-                time.isCurrent = true;
+                time.isNext = true;
 
                 this.renderSchedule();
 
@@ -190,19 +189,24 @@ const App = {
                 var time = schedule[j];
 
                 scheduleHtml = scheduleHtml + `
-                    <li ${time.isCurrent ? 'class="is-current"' : ''}>
+                    <li ${time.isNext ? 'class="is-next"' : ''}>
                         <span>${time.hour}:${time.minute}</span>
                     </li>
                 `;
             }
 
             html = html + `
-                <div role="tabpanel" id="tabpanel${i}" class="o-panel" aria-labelledby="tab${i}" aria-hidden="${!panel.isSelected}">
+                <div role="tabpanel" id="tabpanel${i}" class="o-panel o-panel--scrollable" aria-labelledby="tab${i}" aria-hidden="${!panel.isSelected}">
                     <ul class="c-schedule">${scheduleHtml}</ul>
                 </div>
             `;
         }
         this.DOM.TabPanels.innerHTML = html;
+
+        // scroll to current time schedule
+        setTimeout(() => {
+            document.querySelector(".is-next").scrollIntoView({ behavior: "smooth"});
+        }, 100);
 
     }
 }

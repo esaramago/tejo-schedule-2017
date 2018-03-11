@@ -1,10 +1,14 @@
 .o-tabs {
+    background-color: var(--color-main-500);
+}
+.o-tabs__list {
     display: flex;
     box-sizing: border-box;
+    width: 100%;
+    max-width: 500px;
     height: 48px;
     padding: 0;
-    margin: 0;
-    background-color: var(--color-main-500);
+    margin: 0 auto;
     color: #FFFFFFAA;
     font-size: 1.3rem;
     font-weight: 500;

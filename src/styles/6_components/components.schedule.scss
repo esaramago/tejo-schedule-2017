@@ -4,8 +4,11 @@
     > li {
         padding-bottom: $half-gap;
     }
-    .is-current {
+    .is-next {
         color: pink;
-        background-color: red
+        background-color: red;
+        + li {
+            color: red;
+        }
     }
 }
