@@ -13,24 +13,24 @@ function getCurrentDay() {
     var weekday = date.getDay();
 
     // get time
-    current_hours   = (date.getHours()<10?'0':'') + date.getHours(); // get current hours, with leading zero
-    current_minutes = (date.getMinutes()<10?'0':'') + date.getMinutes(); // get current minutes, with leading zero
-    current_seconds = date.getSeconds(); // get current seconds
+    currentHours   = (date.getHours()<10?'0':'') + date.getHours(); // get current hours, with leading zero
+    currentMinutes = (date.getMinutes()<10?'0':'') + date.getMinutes(); // get current minutes, with leading zero
+    currentSeconds = date.getSeconds(); // get current seconds
     
     // add 24hours, if after midnight, to make sums easier
-    current_hours = ((current_hours < 5) ? current_hours = (parseInt(current_hours)+24) : current_hours)
+    currentHours = ((currentHours < 5) ? currentHours = (parseInt(currentHours)+24) : currentHours)
 
     // fake date (for test purposes)
     //var weekday = 2;
-    //current_hours   = 22;
-    //current_minutes = 25;
-    //current_seconds = date.getSeconds();
+    //currentHours   = 22;
+    //currentMinutes = 25;
+    //currentSeconds = date.getSeconds();
 
 
     // 1.1. Fix current weekday =====================================
 
     // check if time is after midnight
-    if (current_hours >= 0 && current_hours >= 24) {
+    if (currentHours >= 0 && currentHours >= 24) {
 
         // make today yesterday
         weekday = weekday - 1;
@@ -43,17 +43,22 @@ function getCurrentDay() {
     }
 
     // NOW, I HAVE THE CORRECT WEEKDAY!!!!
-
+    var today;
     if ( weekday >= 1 && weekday <= 5 ) {
-        todayIs = 'weekday';
+        today = 'weekday';
     }
     else if ( weekday == 6 ) {
-        todayIs = 'saturday';
+        today = 'saturday';
     }
     else if ( weekday == 0 ) {
-        todayIs = 'sunday';
+        today = 'sunday';
     }
 
-    return todayIs;
+    return {
+        today,
+        currentHours,
+        currentMinutes,
+        currentSeconds
+    }
 
 }

@@ -5,9 +5,18 @@ const App = {
     Schedules: null,
 
     Current: {
+        Time: {
+            Hour: null,
+            Minute: null,
+            Second: null
+        },
         Day: null,
         Hub: null,
+        Way: null,
         Schedule: null
+    },
+    Next: {
+        TimeSchedule: null
     },
 
     DOM: {
@@ -59,7 +68,14 @@ const App = {
     setCurrentDayTab() {
 
         // get current tab id
-        var today = getCurrentDay();
+        var currentDay = getCurrentDay();
+        var today = currentDay.today;
+        
+        // get current time
+        var time = this.Current.Time;
+        time.Hour = currentDay.currentHours;
+        time.Minute = currentDay.currentMinutes;
+        time.Second = currentDay.currentSeconds;
 
         for (var [i, item] in this.Days) {
             var tab = this.Days[i];
@@ -78,7 +94,7 @@ const App = {
     rendertabs() {
 
         var tabs = "";
-        for (let i = 0; i < this.Days.length; i++) {
+        for (var i = 0; i < this.Days.length; i++) {
             var tab = this.Days[i];
 
             tabs = tabs + `
@@ -93,7 +109,7 @@ const App = {
 
         var _this = App;
 
-        for (let i = 0; i < _this.Days.length; i++) {
+        for (var i = 0; i < _this.Days.length; i++) {
             // hide every tab
             _this.Days[i].isSelected = false;
 
@@ -125,7 +141,36 @@ const App = {
             var schedule = this.Schedules[i];
             if (schedule.way === `${from}-${to}`) {
 
-                this.Current.Schedule = schedule.days;
+                this.Current.Way = schedule.days;
+
+                this.getNextScheduleTime();
+
+                return;
+            }
+        }
+
+        
+    },
+    getNextScheduleTime() {
+
+        //this.Current.Schedule = this.Current.Way.filter(x => x.day == this.Current.Day.id);
+        var scheduleIndex = this.Current.Way.findIndex(x => x.day == this.Current.Day.id);
+
+        // get decimal time, for sums
+        var currentTime = this.Current.Time.Hour + '.' + this.Current.Time.Minute;
+        
+        var schedule = this.Current.Way[scheduleIndex].schedule;
+        for (var i = 0; i < schedule.length; i++) {
+            var time = schedule[i];
+
+            // add 24hours, if after midnight, to make sums easier
+            var scheduleTime = ((time.hour < 5) ? time.hour = (parseInt(time.hour) + 24) : time.hour) + '.' + time.minute;
+
+            // find next time in schedule
+            if (currentTime < scheduleTime) {
+                
+                this.Next.TimeSchedule = time;
+                time.isCurrent = true;
 
                 this.renderSchedule();
 
@@ -135,19 +180,17 @@ const App = {
     },
     renderSchedule() {
 
-        //getSchedule("");
-
         var html = "";
         for (var [i, item] in this.Days) {
             var panel = this.Days[i];
-            var schedule = this.Current.Schedule[i].schedule;
-
+            var schedule = this.Current.Way[i].schedule;
+            
             var scheduleHtml = "";
             for (var j=0; j < schedule.length; j++) {
                 var time = schedule[j];
 
                 scheduleHtml = scheduleHtml + `
-                    <li class="">
+                    <li ${time.isCurrent ? 'class="is-current"' : ''}>
                         <span>${time.hour}:${time.minute}</span>
                     </li>
                 `;
