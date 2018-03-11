@@ -1,3 +1,5 @@
+import { getCurrentDay } from "./getCurrentDay";
+import { data } from "./data";
 
 const App = {
     Days: null,
@@ -70,7 +72,7 @@ const App = {
         // get current tab id
         var currentDay = getCurrentDay();
         var today = currentDay.today;
-        
+
         // get current time
         var time = this.Current.Time;
         time.Hour = currentDay.currentHours;
@@ -98,12 +100,17 @@ const App = {
             var tab = this.Days[i];
 
             tabs = tabs + `
-                <li role="tab" tabindex="0" id="tab${i}" data-index="${i}" aria-controls="tabpanel${i}" aria-selected="${tab.isSelected}" onclick="App.onSelectTab(this)">
+                <li role="tab" tabindex="0" id="tab${i}" class="js-tab" data-index="${i}" aria-controls="tabpanel${i}" aria-selected="${tab.isSelected}">
                     <span>${tab.label}</span>
                 </li>
             `
         }
         this.DOM.Tabs.innerHTML = tabs;
+
+        var tabs = document.getElementsByClassName("js-tab");
+        for (var j = 0; j < tabs.length; j++) {
+            tabs[j].addEventListener("click", this.onSelectTab);
+        }
     },
     onSelectTab(e) {
 
@@ -118,7 +125,7 @@ const App = {
         }
 
         // get selected tab index
-        var tab = e;
+        var tab = e.currentTarget;
         var tabIndex = tab.getAttribute("data-index");
 
         // show selected tab
@@ -210,8 +217,5 @@ const App = {
 
     }
 }
+
 App.init();
-
-class X {
-
-}

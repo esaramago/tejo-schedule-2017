@@ -1,3 +1,4 @@
+export { data }; 
 
 var data = {
     "days": [

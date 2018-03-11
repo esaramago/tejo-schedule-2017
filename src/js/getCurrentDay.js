@@ -1,3 +1,5 @@
+export { getCurrentDay }; 
+
 // This file is to GET CURRENT TIME AND DATE
 
 // ==========================================================================
@@ -13,9 +15,9 @@ function getCurrentDay() {
     var weekday = date.getDay();
 
     // get time
-    currentHours   = (date.getHours()<10?'0':'') + date.getHours(); // get current hours, with leading zero
-    currentMinutes = (date.getMinutes()<10?'0':'') + date.getMinutes(); // get current minutes, with leading zero
-    currentSeconds = date.getSeconds(); // get current seconds
+    var currentHours   = (date.getHours()<10?'0':'') + date.getHours(); // get current hours, with leading zero
+    var currentMinutes = (date.getMinutes()<10?'0':'') + date.getMinutes(); // get current minutes, with leading zero
+    var currentSeconds = date.getSeconds(); // get current seconds
     
     // add 24hours, if after midnight, to make sums easier
     currentHours = ((currentHours < 5) ? currentHours = (parseInt(currentHours)+24) : currentHours)
