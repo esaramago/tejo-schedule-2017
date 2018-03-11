@@ -140,26 +140,22 @@ const App = {
         var html = "";
         for (var [i, item] in this.Days) {
             var panel = this.Days[i];
+            var schedule = this.Current.Schedule[i].schedule;
 
-            for (var [j, item2] in this.Current.Schedule) {
-                var day = this.Current.Schedule[j];
+            var scheduleHtml = "";
+            for (var j=0; j < schedule.length; j++) {
+                var time = schedule[j];
 
-                var scheduleHtml = "";
-                for (var [k, item3] in day.schedule) {
-                    var schedule = day.schedule[k];
-
-                    scheduleHtml = scheduleHtml + `
-                        <li class="">
-                            <span>${schedule.hour}:${schedule.minute}</span>
-                        </li>
-                    `;
-                }
+                scheduleHtml = scheduleHtml + `
+                    <li class="">
+                        <span>${time.hour}:${time.minute}</span>
+                    </li>
+                `;
             }
-            //debugger
 
             html = html + `
                 <div role="tabpanel" id="tabpanel${i}" class="o-panel" aria-labelledby="tab${i}" aria-hidden="${!panel.isSelected}">
-                    <ul>${scheduleHtml}</ul>
+                    <ul class="c-schedule">${scheduleHtml}</ul>
                 </div>
             `;
         }
