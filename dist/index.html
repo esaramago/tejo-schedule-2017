@@ -22,16 +22,16 @@
                 <button type="button" class="c-icon">
                     <
                 </button>
-                <h1 class="c-heading-1">{{Barreiro}} - {{Terreiro do Paço}}</h1>
+                <h1 class="c-heading-1 js-title"></h1>
             </header>
             <ul class="o-tabs js-tabs" role="tablist">
                 <!-- Tabs content -->
             </ul>
             <main class="o-main">
                 <div class="c-card">
-                    <div class="u-relative">
+                    <div class="u-relative js-tabpanels">
                         <div role="tabpanel" id="tabpanel0" class="o-panel" aria-labelledby="tab1" aria-hidden="false">
-                            dsdcd efdwsefw
+                            <ul></ul>
                         </div>
                         <div role="tabpanel" id="tabpanel1" class="o-panel" aria-labelledby="tab2" aria-hidden="true">
                             dcsdc adcda
@@ -59,6 +59,9 @@
         firebase.initializeApp(config);
     </script>
 
+    <script src="../data.json"></script>
+    <script src="getCurrentDay.js"></script>
+    <script src="getSchedule.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

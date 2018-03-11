@@ -1,66 +1,113 @@
 
 const App = {
-    Data: {},
-    Schedule: "barreiro",
-    Day: "",
-    Tabs: [
-        {
-            Label: "Dias Úteis",
-            isSelected: true
-        },
-        {
-            Label: "Sábados",
-            isSelected: false
-        },
-        {
-            Label: "Domingos e Feriados",
-            isSelected: false
-        }
-    ],
+    Days: null,
+    Hubs: null,
+    Schedules: null,
+
+    Current: {
+        Day: null,
+        Hub: null,
+        Schedule: null
+    },
+
+    DOM: {
+        Title: document.querySelector(".js-title"),
+        Tabs: document.querySelector(".js-tabs"),
+        TabPanels: document.querySelector(".js-tabpanels")
+    },
     
     init() {
         this.getData();
-        this.rendertabs();
-        //document.querySelector(".js-tabs").addEventListener("click", this.onSelectTab);
     },
     getData() {
-        var app = this;
+
+        this.Days = data.days;
+        this.Hubs = data.hubs;
+        this.Schedules = data.schedules;
+
+        this.firstRender();
+
+        /*
+        // get data via Firebase (much slower)
+        var _this = this;
         firebase.database().ref().on("value", function (snapshot) {
-            app.Data = snapshot.val();
+
+            // set data
+            var data = snapshot.val();
+            _this.Days = data.days;
+            _this.Hubs = data.hubs;
+            _this.Schedules = data.schedules;
+
+            _this.firstRender();
+
         }, function (error) {
             console.log("Error: " + error.code);
-        });
+        }); */
+    },
+    firstRender() {
+        this.Current.Hub = this.Hubs[0];
+        this.renderTitle();
+
+        this.setCurrentDayTab();
+        this.setCurrentSchedule();
+
+    },
+    renderTitle() {
+        var stations = this.Current.Hub.stations;
+        this.DOM.Title.textContent = `${stations[0].name} - ${stations[1].name}`
+    },
+    setCurrentDayTab() {
+
+        // get current tab id
+        var today = getCurrentDay();
+
+        for (var [i, item] in this.Days) {
+            var tab = this.Days[i];
+
+            if (tab.id === today) {
+
+                // activate correct tab
+                tab.isSelected = true;
+                this.Current.Day = tab;
+
+                this.rendertabs();
+                return;
+            }
+        }
+    },
+    rendertabs() {
+
+        var tabs = "";
+        for (let i = 0; i < this.Days.length; i++) {
+            var tab = this.Days[i];
+
+            tabs = tabs + `
+                <li role="tab" tabindex="0" id="tab${i}" data-index="${i}" aria-controls="tabpanel${i}" aria-selected="${tab.isSelected}" onclick="App.onSelectTab(this)">
+                    <span>${tab.label}</span>
+                </li>
+            `
+        }
+        this.DOM.Tabs.innerHTML = tabs;
     },
     onSelectTab(e) {
 
         var _this = App;
 
-        // get clicked tab
-        /* var tab;
-        if (e.target) {
-            if (e.target.nodeName == "li") {
-                tab = e.target;
-            }
-            else {
-                tab = e.target.closest("li");
-            }
-        } */
-        
-        for (let i = 0; i < _this.Tabs.length; i++) {
+        for (let i = 0; i < _this.Days.length; i++) {
             // hide every tab
-            _this.Tabs[i].isSelected = false;
-            
+            _this.Days[i].isSelected = false;
+
             // hide every tabpanel
             document.getElementById("tabpanel" + i).setAttribute("aria-hidden", true);
         }
-        
+
         // get selected tab index
         var tab = e;
         var tabIndex = tab.getAttribute("data-index");
-        
+
         // show selected tab
-        _this.Tabs[tabIndex].isSelected = true;
-    
+        _this.Days[tabIndex].isSelected = true;
+
         // re-render tabs
         _this.rendertabs();
 
@@ -68,18 +115,56 @@ const App = {
         document.getElementById("tabpanel" + tabIndex).setAttribute("aria-hidden", false);
 
     },
-    rendertabs() {
+    setCurrentSchedule() {
+        var stations = this.Current.Hub.stations;
+        var from = stations[0].id;
+        var to = stations[1].id;
+        var day = this.Current.Day.id;
 
-        var tabs = "";
-        
-        for (let i = 0; i < this.Tabs.length; i++) {
-            tabs = tabs + `
-                <li role="tab" tabindex="0" id="tab${i}" data-index="${i}" aria-controls="tabpanel${i}" aria-selected="${this.Tabs[i].isSelected}" onclick="App.onSelectTab(this)">
-                    <span>${this.Tabs[i].Label}</span>
-                </li>
-            `
+        for (var [i, item] in this.Schedules) {
+            var schedule = this.Schedules[i];
+            if (schedule.way === `${from}-${to}`) {
+
+                this.Current.Schedule = schedule.days;
+
+                this.renderSchedule();
+
+                return;
+            }
         }
-        document.querySelector(".js-tabs").innerHTML = tabs;
+    },
+    renderSchedule() {
+
+        //getSchedule("");
+
+        var html = "";
+        for (var [i, item] in this.Days) {
+            var panel = this.Days[i];
+
+            for (var [j, item2] in this.Current.Schedule) {
+                var day = this.Current.Schedule[j];
+
+                var scheduleHtml = "";
+                for (var [k, item3] in day.schedule) {
+                    var schedule = day.schedule[k];
+
+                    scheduleHtml = scheduleHtml + `
+                        <li class="">
+                            <span>${schedule.hour}:${schedule.minute}</span>
+                        </li>
+                    `;
+                }
+            }
+            //debugger
+
+            html = html + `
+                <div role="tabpanel" id="tabpanel${i}" class="o-panel" aria-labelledby="tab${i}" aria-hidden="${!panel.isSelected}">
+                    <ul>${scheduleHtml}</ul>
+                </div>
+            `;
+        }
+        this.DOM.TabPanels.innerHTML = html;
+
     }
 }
 App.init();
