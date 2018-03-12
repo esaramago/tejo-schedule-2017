@@ -21,5 +21,6 @@ module.exports = {
             }
         ]
     },
+    devtool: "source-map", // create sourcemaps
     watch: true
 }
