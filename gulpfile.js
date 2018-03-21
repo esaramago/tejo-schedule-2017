@@ -1,7 +1,19 @@
-var srcPath = "src/";
-var distPath = "dist/";
-
 const gulp = require('gulp');
+
+const webpack = require('webpack');
+const webpackStream = require('webpack-stream');
+const webpackConfig = require('./webpack.config.js');
+
+
+
+gulp.task('scripts', () => {
+    gulp.src('./src/js/app.js')
+        .pipe(webpackStream(webpackConfig), webpack)
+        .pipe(gulp.dest('./app/'));
+});
+
+
+
 const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-sass');
 const sassGlob = require('gulp-sass-glob');
@@ -10,7 +22,7 @@ const watch = require('gulp-watch');
 
 gulp.task('styles', function () {
 
-    return gulp.src(srcPath + 'styles/main.scss')
+    return gulp.src('src/sass/main.scss')
 
         .pipe(plumber())
 
@@ -23,11 +35,11 @@ gulp.task('styles', function () {
 
         .pipe(sourcemaps.write())
 
-        .pipe(gulp.dest(distPath))
+        .pipe(gulp.dest('./app/'))
 
 });
 
-
 gulp.task('default', function () {
-    gulp.watch(srcPath + '**/*.scss', ['styles']);
+    gulp.watch('src/sass/**/*.scss', ['styles']);
+    gulp.watch('src/js/**/*.js', ['scripts']); // watch for webpack
 });

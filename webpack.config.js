@@ -1,15 +1,16 @@
-const path = require('path'); // get root path (this is a core node js package)
+const path = require('path');
 
 module.exports = {
     entry: './src/js/main.js',
     output: {
-        path: path.resolve(__dirname, 'app/dist'), // "./app/dist"
+        path: path.resolve(__dirname, 'app'),
         filename: 'bundle.js'
     },
     module: {
         rules: [
             {
                 test: /\.js$/, // get js files
+                exclude: /(node_modules)/,
                 use: [
                     {
                         loader: 'babel-loader',
@@ -21,6 +22,5 @@ module.exports = {
             }
         ]
     },
-    devtool: "source-map", // create sourcemaps
-    watch: true
+    devtool: "source-map" // create sourcemaps
 }
