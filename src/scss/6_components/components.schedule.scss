@@ -1,14 +1,15 @@
 .c-schedule {
     text-align: center;
-    font-size: 5rem;
+    font-size: 4rem;
     > li {
-        padding-bottom: $half-gap;
+        padding: $quarter-gap;
     }
     .is-next {
-        color: pink;
-        background-color: red;
-        + li {
+        border: 2px solid var(--color-main-500);
+        background-color: var(--color-main-100);
+        color: var(--color-main-500);
+        /* + li {
             color: red;
-        }
+        } */
     }
 }

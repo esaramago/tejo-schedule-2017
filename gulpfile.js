@@ -1,3 +1,8 @@
+const paths = {
+    entry: "./src",
+    output: "./app/dist"
+}
+
 const gulp = require('gulp');
 
 const webpack = require('webpack');
@@ -5,11 +10,10 @@ const webpackStream = require('webpack-stream');
 const webpackConfig = require('./webpack.config.js');
 
 
-
 gulp.task('scripts', () => {
-    gulp.src('./src/js/app.js')
+    gulp.src(paths.entry + '/js/app.js')
         .pipe(webpackStream(webpackConfig), webpack)
-        .pipe(gulp.dest('./app/'));
+        .pipe(gulp.dest(paths.output));
 });
 
 
@@ -22,7 +26,7 @@ const watch = require('gulp-watch');
 
 gulp.task('styles', function () {
 
-    return gulp.src('src/sass/main.scss')
+    return gulp.src(paths.entry + '/scss/main.scss')
 
         .pipe(plumber())
 
@@ -35,11 +39,11 @@ gulp.task('styles', function () {
 
         .pipe(sourcemaps.write())
 
-        .pipe(gulp.dest('./app/'))
+        .pipe(gulp.dest(paths.output))
 
 });
 
 gulp.task('default', function () {
-    gulp.watch('src/sass/**/*.scss', ['styles']);
-    gulp.watch('src/js/**/*.js', ['scripts']); // watch for webpack
+    gulp.watch(paths.entry + '/scss/**/*.scss', ['styles']);
+    gulp.watch(paths.entry + '/js/**/*.js', ['scripts']); // watch for webpack
 });

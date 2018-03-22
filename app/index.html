@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Horários tejo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="dist/main.css" />
 
     <!-- icons -->
     <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-180x180.png">
@@ -30,18 +30,28 @@
 </head>
 <body>
     <div class="o-wrapper">
-        <div class="o-page" aria-hidden="true">
+        <div id="homePage" class="o-page is-active" aria-hidden="true">
             <header class="c-header o-row o-row--middle">
                 <h1 class="c-heading-1">Horários Tejo</h1>
             </header>
             <main class="o-main">
-                pág 1
+                
+                    <button class="c-card js-goto-schedule" role="button" tabindex="0">
+                        Barreiro - Terreiro do Paço
+                    </button>
+                    <button class="c-card js-goto-schedule" role="button" tabindex="0">
+                        Terreiro do Paço - Barreiro
+                    </button>
+
             </main>
         </div>
-        <div class="o-page is-active" aria-hidden="false">
+        <div id="schedulePage" class="o-page" aria-hidden="false">
             <header class="c-header o-row o-row--middle">
-                <button type="button" class="c-icon">
-                    <
+                <button type="button" class="js-goto-home">
+                    <svg class="c-icon" viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
+                        <title>Voltar</title>
+                        <path d="M16,7H3.8l5.6-5.6L8,0L0,8l8,8l1.4-1.4L3.8,9H16V7z" />
+                    </svg>
                 </button>
                 <h1 class="c-heading-1 js-title"></h1>
             </header>

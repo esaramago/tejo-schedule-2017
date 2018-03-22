@@ -1,6 +1,4 @@
-export { data }; 
-
-var data = {
+export var data = {
     "days": [
         {
             "id": "weekday",

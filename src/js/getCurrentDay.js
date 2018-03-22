@@ -1,10 +1,8 @@
-export { getCurrentDay }; 
-
 // This file is to GET CURRENT TIME AND DATE
 
 // ==========================================================================
 
-function getCurrentDay() {
+export function getCurrentDay() {
     
     // 1.0. Get current date and time =====================================
 

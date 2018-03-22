@@ -1,5 +1,5 @@
-import { getCurrentDay } from "./getCurrentDay";
 import { data } from "./data";
+import { getCurrentDay } from "./getCurrentDay";
 
 const App = {
     Days: null,
@@ -22,6 +22,10 @@ const App = {
     },
 
     DOM: {
+        Pages: {
+            Home: document.getElementById("homePage"),
+            Schedule: document.getElementById("schedulePage")
+        },
         Title: document.querySelector(".js-title"),
         Tabs: document.querySelector(".js-tabs"),
         TabPanels: document.querySelector(".js-tabpanels")
@@ -29,6 +33,17 @@ const App = {
     
     init() {
         this.getData();
+
+        document.addEventListener('click', () => {
+debugger
+            if (event.target.matches('.js-goto-schedule')) {
+                this.goToSchedulePage();
+            }
+            else if (event.target.matches('.js-goto-home')) {
+                this.goToHomePage();
+            }
+
+        }, false);
     },
     getData() {
 
@@ -210,12 +225,26 @@ const App = {
         }
         this.DOM.TabPanels.innerHTML = html;
 
+    },
+
+    // ToDo: Correr esta função só depois de abrir a página dos horários
+    scrollToCurrentTime() {
+
         // scroll to current time schedule
         setTimeout(() => {
-            document.querySelector(".is-next").scrollIntoView({ behavior: "smooth"});
+            document.querySelector(".is-next").scrollIntoView({ behavior: "smooth" });
         }, 100);
+    },
 
+    goToSchedulePage() {
+        //this.DOM.Pages.Home.classList.remove("is-active");
+        this.DOM.Pages.Schedule.classList.add("is-active");
+    },
+    goToHomePage() {
+        //this.DOM.Pages.Home.classList.add("is-active");
+        this.DOM.Pages.Schedule.classList.remove("is-active");
     }
+
 }
 
 App.init();
