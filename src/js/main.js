@@ -35,11 +35,11 @@ const App = {
         this.getData();
 
         document.addEventListener('click', () => {
-debugger
+
             if (event.target.matches('.js-goto-schedule')) {
                 this.goToSchedulePage();
             }
-            else if (event.target.matches('.js-goto-home')) {
+            else if (event.currentTarget.activeElement.matches('.js-goto-home')) {
                 this.goToHomePage();
             }
 
@@ -232,17 +232,23 @@ debugger
 
         // scroll to current time schedule
         setTimeout(() => {
-            document.querySelector(".is-next").scrollIntoView({ behavior: "smooth" });
+            document.querySelector(".is-next").scrollIntoView({ block: "center" });
         }, 100);
     },
 
     goToSchedulePage() {
-        //this.DOM.Pages.Home.classList.remove("is-active");
+        this.DOM.Pages.Home.setAttribute("aria-hidden", true);
+        
         this.DOM.Pages.Schedule.classList.add("is-active");
+        this.DOM.Pages.Schedule.setAttribute("aria-hidden", false);
+
+        this.scrollToCurrentTime();
     },
     goToHomePage() {
-        //this.DOM.Pages.Home.classList.add("is-active");
+        this.DOM.Pages.Home.setAttribute("aria-hidden", false);
+
         this.DOM.Pages.Schedule.classList.remove("is-active");
+        this.DOM.Pages.Schedule.setAttribute("aria-hidden", true);
     }
 
 }

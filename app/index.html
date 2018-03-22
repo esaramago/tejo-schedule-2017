@@ -30,22 +30,24 @@
 </head>
 <body>
     <div class="o-wrapper">
-        <div id="homePage" class="o-page is-active" aria-hidden="true">
+        <div id="homePage" class="o-page is-active" aria-hidden="false">
             <header class="c-header o-row o-row--middle">
                 <h1 class="c-heading-1">Horários Tejo</h1>
             </header>
             <main class="o-main">
-                
-                    <button class="c-card js-goto-schedule" role="button" tabindex="0">
-                        Barreiro - Terreiro do Paço
-                    </button>
-                    <button class="c-card js-goto-schedule" role="button" tabindex="0">
-                        Terreiro do Paço - Barreiro
-                    </button>
-
+                <button type="button" class="o-card js-goto-schedule">
+                    <div class="o-card__section c-itinerary">
+                        <span>Barreiro</span>
+                        <span class="c-itinerary__arrow"></span>
+                        <span>Terreiro do Paço</span>
+                    </div>
+                </button>
+                <button type="button" class="o-card js-goto-schedule">
+                    Terreiro do Paço - Barreiro
+                </button>
             </main>
         </div>
-        <div id="schedulePage" class="o-page" aria-hidden="false">
+        <div id="schedulePage" class="o-page" aria-hidden="true">
             <header class="c-header o-row o-row--middle">
                 <button type="button" class="js-goto-home">
                     <svg class="c-icon" viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
@@ -61,7 +63,7 @@
                 </ul>
             </div>
             <main class="o-main u-full-height">
-                <div class="c-card u-full-height">
+                <div class="o-card u-full-height">
                     <div class="u-relative u-full-height js-tabpanels">
                         <!-- Tab Panels content -->
                     </div>

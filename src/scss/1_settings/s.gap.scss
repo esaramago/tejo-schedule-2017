@@ -1,0 +1,9 @@
+$gap: 24px;
+$gap-sm: $gap/2;
+$gap-xs: $gap/4;
+
+:root {
+    --gap: 24px;
+    --gap-sm: calc(var(--gap) / 2);
+    --gap-xs: 24px;
+}
