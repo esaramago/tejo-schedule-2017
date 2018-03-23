@@ -6,6 +6,7 @@ $gap-xs: $gap/4;
     --gap: 24px;
     --gap-sm: calc(var(--gap) / 2);
     --gap-xs: calc(var(--gap) / 4);
+    --gap-lg: calc(var(--gap) * 1.5);
     
     @media (max-width: 350px) {
         --gap: 15px;

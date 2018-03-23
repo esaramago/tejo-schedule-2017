@@ -3,7 +3,7 @@
     --card-padding: var(--gap);
     box-sizing: border-box;
     display: block;
-    padding: var(--card-padding);
+    padding: var(--card-padding) 0;
     margin-bottom: var(--card-padding);
     border-radius: 2px;
     background-color: rgb(255, 255, 255);
@@ -12,12 +12,4 @@
 button.c-card {
     width: 100%;
     text-align: inherit;
-}
-
-.c-card__section {
-    padding: 0 var(--card-padding) var(--card-padding);
-    margin-right: calc(var(--card-padding) * -1);
-    margin-left: calc(var(--card-padding) * -1);
-    margin-bottom: var(--card-padding);
-    border-bottom: 1px solid var(--color-grey-300);
 }
