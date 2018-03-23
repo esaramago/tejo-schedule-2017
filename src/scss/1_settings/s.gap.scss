@@ -5,5 +5,9 @@ $gap-xs: $gap/4;
 :root {
     --gap: 24px;
     --gap-sm: calc(var(--gap) / 2);
-    --gap-xs: 24px;
+    --gap-xs: calc(var(--gap) / 4);
+    
+    @media (max-width: 350px) {
+        --gap: 15px;
+    }
 }

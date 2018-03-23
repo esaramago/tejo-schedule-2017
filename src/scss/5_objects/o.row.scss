@@ -1,8 +1,9 @@
 .o-row {
     display: flex;
-    padding: 0 $gap;
+    padding-right: var(--gap);
+    padding-left: var(--gap);
     > * + * {
-        padding-left: $gap;
+        padding-left: var(--gap);
     }
 }
 .o-row--middle {

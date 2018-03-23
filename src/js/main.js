@@ -26,6 +26,7 @@ const App = {
             Home: document.getElementById("homePage"),
             Schedule: document.getElementById("schedulePage")
         },
+        Itineraries: document.querySelector(".js-itineraries"),
         Title: document.querySelector(".js-title"),
         Tabs: document.querySelector(".js-tabs"),
         TabPanels: document.querySelector(".js-tabpanels")
@@ -71,12 +72,50 @@ const App = {
         }); */
     },
     firstRender() {
+
         this.Current.Hub = this.Hubs[0];
+        this.renderItineraries();
         this.renderTitle();
 
         this.setCurrentDayTab();
         this.setCurrentSchedule();
 
+    },
+    renderItineraries() {
+
+        var template = "";
+
+        var inbound = this.Current.Hub.stations[0].name;
+        var outbound = this.Current.Hub.stations[1].name;
+        var next = "19:20";
+        var comming = "19:30";
+        _render(inbound, outbound, next, comming);
+
+        var inbound_2 =  outbound;
+        var outbound_2 = inbound;
+        var next = "19:25";
+        var comming = "19:40";
+        _render(inbound_2, outbound_2, next, comming);
+
+        function _render(inbound, outbound, next, comming) {
+
+            template = template + `
+                <button type="button" class="c-card js-goto-schedule">
+                    <div class="c-card__section o-row c-itinerary">
+                        <span>${inbound}</span>
+                        <div class="o-row__wide">
+                            <span class="c-itinerary__arrow"></span>
+                        </div>
+                        <span>${outbound}</span>
+                    </div>
+                    <div class="u-text-center">
+                        <span class="u-font-semibold u-font-xl">${next}</span>
+                    </div>
+                </button>
+            `;
+        }
+
+        this.DOM.Itineraries.innerHTML = template;
     },
     renderTitle() {
         var stations = this.Current.Hub.stations;
