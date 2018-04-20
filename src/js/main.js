@@ -176,7 +176,7 @@ const App = {
                             <span>${nextTime}</span>
                         </div>
                         <div>
-                            <span class="c-button">Horários</span>
+                            <span class="c-button">Ver Horários</span>
                         </div>
                     </div>
                 </button>
@@ -265,8 +265,8 @@ const App = {
         var html = "";
         var days = this.Current.Schedules[itineraryIndex].days;
         for (var [i, item] in days) {
-            var panel = this.Current.Day;
             var schedule = days[i].schedule;
+            var isSelected = this.Days[i].isSelected;
             
             var scheduleHtml = "";
             for (var j=0; j < schedule.length; j++) {
@@ -280,7 +280,7 @@ const App = {
             }
 
             html = html + `
-                <div role="tabpanel" id="tabpanel${i}" class="o-panel o-panel--scrollable" aria-labelledby="tab${i}" aria-hidden="${!panel.isSelected}">
+                <div role="tabpanel" id="tabpanel${i}" class="o-panel o-panel--scrollable" aria-labelledby="tab${i}" aria-hidden="${!isSelected}">
                     <ul class="c-schedule">${scheduleHtml}</ul>
                 </div>
             `;
