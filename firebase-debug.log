@@ -1,0 +1,32 @@
+[debug] [2018-04-20T23:10:01.654Z] ----------------------------------------------------------------------
+[debug] [2018-04-20T23:10:01.656Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Emanuel\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] [2018-04-20T23:10:01.656Z] CLI Version:   3.18.4
+[debug] [2018-04-20T23:10:01.656Z] Platform:      win32
+[debug] [2018-04-20T23:10:01.656Z] Node Version:  v8.9.4
+[debug] [2018-04-20T23:10:01.657Z] Time:          Sat Apr 21 2018 00:10:01 GMT+0100 (Hora de Verão de GMT)
+[debug] [2018-04-20T23:10:01.657Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-04-20T23:10:01.667Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-04-20T23:10:01.668Z] > authorizing via signed-in user
+[debug] [2018-04-20T23:10:01.670Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/horariostejo  
+  
+ Sat Apr 21 2018 00:10:01 GMT+0100 (Hora de Verão de GMT)
+[debug] [2018-04-20T23:10:02.522Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-20T23:10:02.522Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/horariostejo/tokens  
+  
+ Sat Apr 21 2018 00:10:02 GMT+0100 (Hora de Verão de GMT)
+[debug] [2018-04-20T23:10:04.601Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-20T23:10:04.602Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/horariostejo  
+  
+ Sat Apr 21 2018 00:10:04 GMT+0100 (Hora de Verão de GMT)
+[debug] [2018-04-20T23:10:05.480Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'D:\Trabalho\www\apps\tejo-schedule 2017'...
+[info] 
+[debug] [2018-04-20T23:10:05.483Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/389883290078/clients/_:getWebAppConfig  
+  
+ Sat Apr 21 2018 00:10:05 GMT+0100 (Hora de Verão de GMT)
+[debug] [2018-04-20T23:10:06.416Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: app
+[info] +  hosting: Local server: http://localhost:5000
+

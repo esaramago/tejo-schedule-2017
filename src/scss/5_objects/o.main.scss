@@ -4,6 +4,6 @@
     box-sizing: border-box;
     width: 100%;
     max-width: 500px;
-    padding: $gap-sm;
+    padding: var(--gap-sm);
     margin: auto;
 }
