@@ -6,6 +6,13 @@
         padding-left: var(--gap);
     }
 }
+/* .o-row--grouped {
+    padding-right: var(--gap-sm);
+    padding-left: var(--gap-sm);
+    > * + * {
+        padding-left: var(--gap-sm);
+    }
+} */
 .o-row--middle {
     align-items: center;
 }

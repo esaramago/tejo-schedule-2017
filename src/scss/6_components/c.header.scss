@@ -1,6 +1,8 @@
 .c-header {
+    @extend .o-row;
+    @extend .o-row--middle;
     height: 55px;
-    padding: 0 $gap;
+    padding: 0 var(--gap);
     background-color: $color-main-500;
     color: #FFF;
     fill: #FFF;
