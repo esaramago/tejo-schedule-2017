@@ -1,14 +1,20 @@
 .c-schedule {
     padding: 0 var(--gap);
+    font-size: 3rem;
+    line-height: 1.2;
     text-align: center;
-    font-size: 4rem;
     > li {
-        padding: $gap-xs;
+        padding: var(--gap-xs) var(--gap);
     }
     .is-next {
-        border: 2px solid var(--color-main-500);
-        background-color: var(--color-main-100);
-        color: var(--color-main-500);
+        padding: 0;
+        > span {
+            display: inline-block;
+            padding: var(--gap-xs) var(--gap);
+            border: 2px solid var(--color-main-500);
+            background-color: var(--color-main-100);
+            color: var(--color-main-500);
+        }
         /* + li {
             color: red;
         } */
