@@ -30,3 +30,44 @@
 [info] i  hosting: Serving hosting files from: app
 [info] +  hosting: Local server: http://localhost:5000
 
+[debug] [2018-04-21T11:57:56.793Z] ----------------------------------------------------------------------
+[debug] [2018-04-21T11:57:56.796Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Emanuel\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] [2018-04-21T11:57:56.796Z] CLI Version:   3.18.4
+[debug] [2018-04-21T11:57:56.796Z] Platform:      win32
+[debug] [2018-04-21T11:57:56.796Z] Node Version:  v8.9.4
+[debug] [2018-04-21T11:57:56.797Z] Time:          Sat Apr 21 2018 12:57:56 GMT+0100 (Hora de Verão de GMT)
+[debug] [2018-04-21T11:57:56.797Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-04-21T11:57:56.812Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-04-21T11:57:56.813Z] > authorizing via signed-in user
+[debug] [2018-04-21T11:57:56.815Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-04-21T11:57:56.815Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/vl4qv5c02l_pEpnGkCoZ09yHF-TRCbn15YCxcsGKRaw',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Sat Apr 21 2018 12:57:56 GMT+0100 (Hora de Verão de GMT)
+[debug] [2018-04-21T11:57:57.008Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-21T11:57:57.013Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/horariostejo  
+  
+ Sat Apr 21 2018 12:57:57 GMT+0100 (Hora de Verão de GMT)
+[debug] [2018-04-21T11:57:57.799Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-21T11:57:57.800Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/horariostejo/tokens  
+  
+ Sat Apr 21 2018 12:57:57 GMT+0100 (Hora de Verão de GMT)
+[debug] [2018-04-21T11:57:58.386Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-21T11:57:58.402Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/horariostejo  
+  
+ Sat Apr 21 2018 12:57:58 GMT+0100 (Hora de Verão de GMT)
+[debug] [2018-04-21T11:57:59.234Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'D:\Trabalho\www\apps\tejo-schedule 2017'...
+[info] 
+[debug] [2018-04-21T11:57:59.236Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/389883290078/clients/_:getWebAppConfig  
+  
+ Sat Apr 21 2018 12:57:59 GMT+0100 (Hora de Verão de GMT)
+[debug] [2018-04-21T11:57:59.713Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: app
+[info] +  hosting: Local server: http://localhost:5000
+

@@ -2,18 +2,15 @@ export var data = {
     "days": [
         {
             "id": "weekday",
-            "label": "Dias Úteis",
-            "isSelected": false
+            "label": "Dias Úteis"
         },
         {
             "id": "saturday",
-            "label": "Sábados",
-            "isSelected": false
+            "label": "Sábados"
         },
         {
             "id": "sunday",
-            "label": "Domingos e Feriados",
-            "isSelected": false
+            "label": "Domingos e Feriados"
         }
     ],
 
@@ -30,7 +27,8 @@ export var data = {
                     "name": "Terreiro do Paço"
                 }
             ]
-        }, {
+        },
+        {
             "id": "seixal",
             "stations": [
                 {

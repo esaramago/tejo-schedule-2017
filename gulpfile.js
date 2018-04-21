@@ -4,14 +4,15 @@ const paths = {
 }
 
 const gulp = require('gulp');
+const plumber = require('gulp-plumber');
 
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const webpackConfig = require('./webpack.config.js');
 
-
 gulp.task('scripts', () => {
     gulp.src(paths.entry + '/js/app.js')
+        .pipe(plumber())
         .pipe(webpackStream(webpackConfig), webpack)
         .pipe(gulp.dest(paths.output));
 });
@@ -21,7 +22,6 @@ gulp.task('scripts', () => {
 const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-sass');
 const sassGlob = require('gulp-sass-glob');
-const plumber = require('gulp-plumber');
 const watch = require('gulp-watch');
 
 gulp.task('styles', function () {

@@ -1,63 +1,70 @@
-import { data } from "./data";
-import { getCurrentDay } from "./getCurrentDay";
+import { data } from './data';
+import { getCurrentDay } from './getCurrentDay';
+
+
 
 const App = {
-    Days: null,
-    Hubs: null,
-    Schedules: null,
+    Days: data.days,
+    Hubs: data.hubs,
+    Schedules: data.schedules,
 
     Current: {
+        DayOfWeek: '',
         Time: {
-            Hour: null,
-            Minute: null,
-            Second: null
+            Hour: null, // now hour
+            Minute: null, // now minute
+            Second: null // now second
         },
-        Day: null,
-        Hub: null,
-        Way: null,
-        Schedules: [],
-        DaySchedules: []
+        //Day: null, // now day
+        Hub: '', // selected hub
+        Way: '' // selected way
+        //Schedules: [],
+        //DaySchedules: []
     },
     Next: {
-        TimeSchedules: []
+        ScheduleTimes: [] // next hour and minute of the two ways
     },
 
     DOM: {
         Pages: {
-            Home: document.getElementById("homePage"),
-            Schedule: document.getElementById("schedulePage")
+            Home: document.getElementById('homePage'),
+            Schedule: document.getElementById('schedulePage')
         },
-        Itineraries: document.querySelector(".js-itineraries"),
-        Title: document.querySelector(".js-title"),
-        Tabs: document.querySelector(".js-tabs"),
-        TabPanels: document.querySelector(".js-tabpanels")
+        Itineraries: document.querySelector('.js-itineraries'),
+        Title: document.querySelector('.js-title'),
+        Tabs: document.querySelector('.js-tabs'),
+        TabPanels: document.querySelector('.js-tabpanels')
     },
     
     init() {
-        this.getData();
+        // 1. Get and set data
+        this.setNow();
+        this.Current.Hub = this.Hubs[0].id; // ToDo: get Hub from user preferences (localstorage)
 
-        document.addEventListener('click', () => {
+        // 2. Render initial components
+        this.renderItineraries();
+        this.createNavigation();
 
-            var clickedElement = event.currentTarget.activeElement;
-
-            if (clickedElement.matches('.js-goto-schedule')) {
-                this.goToSchedulePage(clickedElement.dataset.itinerary);
-            }
-            else if (clickedElement.matches('.js-goto-home')) {
-                this.goToHomePage();
-            }
-
-        }, false);
     },
-    getData() {
 
-        this.Days = data.days;
-        this.Hubs = data.hubs;
-        this.Schedules = data.schedules;
+    // GET/SET DATA
+    setNow() {
 
-        this.filterData();
+        // get current tab id
+        var now = getCurrentDay();
 
-        /*
+        // get current DayOfWeek
+        this.Current.DayOfWeek = now.today;
+
+        // get current time
+        var time = this.Current.Time;
+        time.Hour = now.currentHours;
+        time.Minute = now.currentMinutes;
+        time.Second = now.currentSeconds;
+
+    },
+    /*getData() {
+
         // get data via Firebase (much slower)
         var _this = this;
         firebase.database().ref().on("value", function (snapshot) {
@@ -72,103 +79,86 @@ const App = {
 
         }, function (error) {
             console.log("Error: " + error.code);
-        }); */
-    },
-    filterData() {
-
-        this.Current.Hub = this.Hubs[0];
-        this.getCurrentDay();
-        this.getCurrentSchedules();
-
-        this.renderTitle();
-
-    },
-    getCurrentSchedules() {
-        var stations = this.Current.Hub.stations;
-        var station1 = stations[0].id;
-        var station2 = stations[1].id;
+        });
+    }, */
+    getNextScheduleTime(hub) {
 
         // find schedules based on inbound/outbound
-        var itinerary1 = this.Schedules.filter(x => x.way == `${station1}-${station2}`)[0];
-        var itinerary2 = this.Schedules.filter(x => x.way == `${station2}-${station1}`)[0];
+        var station1 = hub.stations[0].id;
+        var station2 = hub.stations[1].id;
 
-        this.Current.Schedules.push(itinerary1);
-        this.Current.Schedules.push(itinerary2);
+        var ways = [
+            `${station1}-${station2}`,
+            `${station2}-${station1}`
+        ];
 
-        this.getNextItineraryScheduleTime(0);
-        this.getNextItineraryScheduleTime(1);
+        var itineraries = [
+            this.Schedules.find(x => x.way == ways[0]),
+            this.Schedules.find(x => x.way == ways[1])
+        ];
 
-        this.renderItineraries();
+        var nextTimes = [];
+        itineraries.forEach((way, i) => {
 
-    },
-    getNextItineraryScheduleTime(index) {
+            // get decimal time, for sums
+            var currentTime = this.Current.Time.Hour.toString() + this.Current.Time.Minute.toString();
 
-        // get current day and hub schedule
-        var scheduleDay = this.Current.Schedules[index].days.filter(x => x.day == this.Current.Day.id)[0];
+            // get current day and hub schedule
+            var scheduleDayTimes = way.days.find(x => x.day == this.Current.DayOfWeek).schedule;
 
-        // set current day and hub schedule
-        this.Current.DaySchedules.push(scheduleDay);
+            // get next hub time
+            var timeIndex = scheduleDayTimes.findIndex(x => {
 
-        // get decimal time, for sums
-        var currentTime = this.Current.Time.Hour + this.Current.Time.Minute;
+                // add 24hours, if after midnight, to make sums easier
+                //var auxHour = (x.hour < 5) ? x.hour = (parseInt(x.hour) + 24) : x.hour;
+                var auxHour = (x.hour < 5) ? (parseInt(x.hour) + 24) : x.hour;
+                var scheduleTime = auxHour + x.minute;
 
-        // get next hub time
-        var filled = false;
-        for (var i = 0; i < scheduleDay.schedule.length; i++) {
-            var time = scheduleDay.schedule[i];
+                // return next time in schedule
+                return currentTime < scheduleTime;
+            });
 
-            // add 24hours, if after midnight, to make sums easier
-            var hour = (time.hour < 5) ? time.hour = (parseInt(time.hour) + 24) : time.hour;
-            var scheduleTime = hour + time.minute;
+            // create item in array
+            nextTimes.push(scheduleDayTimes[timeIndex]);
+            nextTimes[i].way = ways[i];
+        });
 
-            // find next time in schedule
-            if (currentTime < scheduleTime) {
-
-                this.Next.TimeSchedules.push(time);
-                time.isNext = true;
-                filled = true;
-                return;
-            }
-        }
-
-        // check if Next.TimeSchedules was filled
-        if (!filled) {
-            debugger
-        }
+        return nextTimes;
 
     },
+
+
+    // RENDER
     renderItineraries() {
 
-        var template = "";
-        debugger
+        var hub = this.Hubs.find(hub => hub.id === this.Current.Hub); // find current hub in Model
+        this.Next.ScheduleTimes = this.getNextScheduleTime(hub); // set next schedule times
+
         var itineraries = [
             {
-                inbound: this.Current.Hub.stations[0].name,
-                outbound: this.Current.Hub.stations[1].name,
-                nextTime: `${this.Next.TimeSchedules[0].hour}:${this.Next.TimeSchedules[0].minute}`,
-                comming: "19:30"
+                inbound: hub.stations[0].name,
+                outbound: hub.stations[1].name,
+                nextTime: `${this.Next.ScheduleTimes[0].hour}:${this.Next.ScheduleTimes[0].minute}`,
+                comming: '19:30' // ToDo: get comming
             },
             {
-                inbound: this.Current.Hub.stations[1].name,
-                outbound: this.Current.Hub.stations[0].name,
-                nextTime: `${this.Next.TimeSchedules[1].hour}:${this.Next.TimeSchedules[1].minute}`,
-                comming: "19:40"
+                inbound: hub.stations[1].name,
+                outbound: hub.stations[0].name,
+                nextTime: `${this.Next.ScheduleTimes[1].hour}:${this.Next.ScheduleTimes[1].minute}`,
+                comming: '19:40' // ToDo: get comming
             }
         ];
 
-        for (const itinerary in itineraries) {
-            var inbound = itineraries[itinerary].inbound;
-            var outbound = itineraries[itinerary].outbound;
-            var nextTime = itineraries[itinerary].nextTime;
-            var comming = itineraries[itinerary].comming;
+        var html = '';
+        for (let i in itineraries) {
+            var inbound = itineraries[i].inbound;
+            var outbound = itineraries[i].outbound;
+            var nextTime = itineraries[i].nextTime;
+            var comming = itineraries[i].comming;
+            var way = this.Next.ScheduleTimes[i].way;
 
-            _render(inbound, outbound, nextTime, comming, itinerary);
-        }
-
-        function _render(inbound, outbound, nextTime, comming, itinerary) {
-
-            template = template + `
-                <button type="button" class="c-card js-goto-schedule" data-itinerary="${itinerary}">
+            html = html + `
+                <button type="button" class="c-card js-goto-schedule" data-way="${way}">
                     <div class="o-row c-itinerary">
                         <span>${inbound}</span>
                         <div class="o-row__wide">
@@ -191,97 +181,84 @@ const App = {
             `;
         }
 
-        this.DOM.Itineraries.innerHTML = template;
+        this.DOM.Itineraries.innerHTML = html; // place itineraries in DOM
+
     },
-    renderTitle() {
-        var stations = this.Current.Hub.stations;
-        this.DOM.Title.textContent = `${stations[0].name} - ${stations[1].name}`
-    },
-    getCurrentDay() {
+    createNavigation() {
 
-        // get current tab id
-        var currentDay = getCurrentDay();
-        var today = currentDay.today;
+        document.addEventListener('click', () => {
 
-        // get current time
-        var time = this.Current.Time;
-        time.Hour = currentDay.currentHours;
-        time.Minute = currentDay.currentMinutes;
-        time.Second = currentDay.currentSeconds;
+            var clickedElement = event.currentTarget.activeElement;
 
-        for (var [i, item] in this.Days) {
-            var tab = this.Days[i];
-
-            if (tab.id === today) {
-
-                // activate correct tab
-                tab.isSelected = true;
-                this.Current.Day = tab;
-
-                this.rendertabs();
-                return;
+            if (clickedElement.matches('.js-goto-schedule')) {
+                this.goToSchedulePage(clickedElement.dataset.way);
             }
-        }
-    },
-    rendertabs() {
+            else if (clickedElement.matches('.js-goto-home')) {
+                this.goToHomePage();
+            }
 
-        var tabs = "";
-        for (var i = 0; i < this.Days.length; i++) {
+        }, false);
+    },
+    renderTitle(way) {
+        var currentHub = this.Hubs.find(x => x.id === this.Current.Hub).stations; // find current hub stations in Model
+        var stations = way.split('-'); 
+        var ways = [
+            currentHub.find(x => x.id === stations[0]).name,
+            currentHub.find(x => x.id === stations[1]).name
+        ];
+
+        this.DOM.Title.textContent = `${ways[0]} - ${ways[1]}`; // render title
+    },
+    renderTabs(selectedTabIndex) {
+
+        var html = '';
+        for (let i in this.Days) {
             var tab = this.Days[i];
 
-            tabs = tabs + `
-                <li role="tab" tabindex="0" id="tab${i}" class="js-tab" data-index="${i}" aria-controls="tabpanel${i}" aria-selected="${tab.isSelected}">
+            // get tab to select
+            var isSelected = false;
+            if (selectedTabIndex) { // check if selectedTabIndex is passed
+                if (selectedTabIndex == i) {
+                    isSelected = true;
+                }
+            }
+            else {
+                // check if is this tab is current day of week
+                if (tab.id === this.Current.DayOfWeek) {
+                    isSelected = true;
+                }
+            }
+
+            html = html + `
+                <li role="tab" tabindex="0" id="tab${i}" class="js-tab" data-index="${i}" aria-controls="tabpanel${i}" aria-selected="${isSelected}">
                     <span>${tab.label}</span>
                 </li>
-            `
+            `;
         }
-        this.DOM.Tabs.innerHTML = tabs;
+        this.DOM.Tabs.innerHTML = html; // place tabs in DOM
 
+        // set click event  
         var tabs = document.getElementsByClassName("js-tab");
-        for (var j = 0; j < tabs.length; j++) {
+        for (let j=0; j < tabs.length; j++) {
             tabs[j].addEventListener("click", this.onSelectTab);
         }
     },
-    onSelectTab(e) {
+    renderSchedule(way) {
 
-        var _this = App;
+        var html = '';
+        var days = this.Schedules.find(x => x.way === way).days;
+        var next = this.Next.ScheduleTimes.find(x => x.way === way);
 
-        for (var i = 0; i < _this.Days.length; i++) {
-            // hide every tab
-            _this.Days[i].isSelected = false;
+        for (let i in days) {
+            var isSelected = this.Current.DayOfWeek === days[i].day; // check if today's day of week is the same as this iteration
 
-            // hide every tabpanel
-            document.getElementById("tabpanel" + i).setAttribute("aria-hidden", true);
-        }
-
-        // get selected tab index
-        var tab = e.currentTarget;
-        var tabIndex = tab.getAttribute("data-index");
-
-        // show selected tab
-        _this.Days[tabIndex].isSelected = true;
-
-        // re-render tabs
-        _this.rendertabs();
-
-        // show selected tabpanel
-        document.getElementById("tabpanel" + tabIndex).setAttribute("aria-hidden", false);
-
-    },
-    renderSchedule(itineraryIndex) {
-
-        var html = "";
-        var days = this.Current.Schedules[itineraryIndex].days;
-        for (var [i, item] in days) {
             var schedule = days[i].schedule;
-            var isSelected = this.Days[i].isSelected;
-            
-            var scheduleHtml = "";
-            for (var j=0; j < schedule.length; j++) {
+            var scheduleHtml = '';
+            for (var j = 0; j < schedule.length; j++) {
                 var time = schedule[j];
-
+                var isNext = isSelected && next.hour === time.hour && next.minute === time.minute; // check if next time as this iteration
                 scheduleHtml = scheduleHtml + `
-                    <li ${time.isNext ? 'class="is-next"' : ''}>
+                    <li ${isNext ? 'class="is-next"' : ''}>
                         <span>${time.hour}:${time.minute}</span>
                     </li>
                 `;
@@ -297,6 +274,30 @@ const App = {
 
     },
 
+
+
+    // EVENTS
+    onSelectTab(e) {
+
+        var _this = App;
+
+        for (let i=0; i < _this.Days.length; i++) {
+
+            // hide every tabpanel
+            document.getElementById("tabpanel" + i).setAttribute("aria-hidden", true);
+        }
+
+        // get selected tab index
+        var tab = e.currentTarget;
+        var tabIndex = tab.getAttribute("data-index");
+        
+        // re-render tabs
+        _this.renderTabs(tabIndex);
+
+        // show selected tab and tabpanel
+        document.getElementById("tabpanel" + tabIndex).setAttribute("aria-hidden", false);
+
+    },
     scrollToCurrentTime() {
 
         // scroll to current time schedule
@@ -304,13 +305,16 @@ const App = {
             document.querySelector(".is-next").scrollIntoView({ block: "center" });
         }, 300);
     },
+    goToSchedulePage(way) {
 
-    goToSchedulePage(itineraryIndex) {
+        this.renderTabs();
+        this.renderSchedule(way);
+        this.renderTitle(way);
 
-        this.renderSchedule(itineraryIndex);
-
+        // close Home page tab
         this.DOM.Pages.Home.setAttribute("aria-hidden", true);
-        
+
+        // open Schedule page
         this.DOM.Pages.Schedule.classList.add("is-active");
         this.DOM.Pages.Schedule.setAttribute("aria-hidden", false);
 
@@ -321,7 +325,8 @@ const App = {
 
         this.DOM.Pages.Schedule.classList.remove("is-active");
         this.DOM.Pages.Schedule.setAttribute("aria-hidden", true);
-    }
+    },
+
 
 }
 
