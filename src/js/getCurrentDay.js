@@ -26,9 +26,9 @@ export function getCurrentDay() {
 
 
     // fake date (for test purposes)
-    var weekday = '5';
-    currentHours = '01';
-    currentMinutes = '55';
+    //var weekday = 5;
+    //currentHours = '01';
+    //currentMinutes = '55';
     //currentSeconds = date.getSeconds();
 
 
