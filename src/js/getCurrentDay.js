@@ -13,8 +13,8 @@ export function getCurrentDay() {
     var weekday = date.getDay();
 
     // get time
-    var currentHours   = (date.getHours()<10?'0':'') + date.getHours(); // get current hours, with leading zero
-    var currentMinutes = (date.getMinutes()<10?'0':'') + date.getMinutes(); // get current minutes, with leading zero
+    var currentHours   = (date.getHours()   < 10 ? '0' : '') + date.getHours(); // get current hours, with leading zero
+    var currentMinutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes(); // get current minutes, with leading zero
     var currentSeconds = date.getSeconds(); // get current seconds
 
 
@@ -26,18 +26,19 @@ export function getCurrentDay() {
 
 
     // fake date (for test purposes)
-    //var weekday = 5;
-    //currentHours = 22;
-    //currentMinutes = 55;
+    var weekday = '5';
+    currentHours = '01';
+    currentMinutes = '55';
     //currentSeconds = date.getSeconds();
 
 
-
     // check if time is after midnight
-    if (currentHours >= 0 && currentHours >= 24) {
+    //if (currentHours >= 0 && currentHours >= 24) {
+    if (currentHours >= 0 && currentHours < 5) {
 
         // make today yesterday
         weekday = weekday - 1;
+        date.setDate(date.getDate() - 1);
 
         // if sunday gets a negative value, make it saturday
         if (weekday == -1) {
@@ -46,19 +47,20 @@ export function getCurrentDay() {
     }
 
     // NOW, I HAVE THE CORRECT WEEKDAY!!!!
-    var today;
+    var dayOfWeek;
     if ( weekday >= 1 && weekday <= 5 ) {
-        today = 'weekday';
+        dayOfWeek = 'weekday';
     }
     else if ( weekday == 6 ) {
-        today = 'saturday';
+        dayOfWeek = 'saturday';
     }
     else if ( weekday == 0 ) {
-        today = 'sunday';
+        dayOfWeek = 'sunday';
     }
 
     return {
-        today,
+        date,
+        dayOfWeek,
         currentHours,
         currentMinutes,
         currentSeconds

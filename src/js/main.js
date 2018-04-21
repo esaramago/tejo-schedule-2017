@@ -10,16 +10,15 @@ const App = {
 
     Current: {
         DayOfWeek: '',
+        Date: null, // now date (or yesterday)
+        Day: null, // now day
         Time: {
             Hour: null, // now hour
             Minute: null, // now minute
             Second: null // now second
         },
-        //Day: null, // now day
         Hub: '', // selected hub
         Way: '' // selected way
-        //Schedules: [],
-        //DaySchedules: []
     },
     Next: {
         ScheduleTimes: [] // next hour and minute of the two ways
@@ -53,8 +52,9 @@ const App = {
         // get current tab id
         var now = getCurrentDay();
 
-        // get current DayOfWeek
-        this.Current.DayOfWeek = now.today;
+        // get current Day
+        this.Current.Date = now.date;
+        this.Current.DayOfWeek = now.dayOfWeek;
 
         // get current time
         var time = this.Current.Time;
@@ -101,12 +101,14 @@ const App = {
         itineraries.forEach((way, i) => {
 
             // get decimal time, for sums
-            var currentTime = this.Current.Time.Hour.toString() + this.Current.Time.Minute.toString();
+            var currentHour = this.Current.Time.Hour;
+            var auxCurrentHour = (currentHour < 5) ? (parseInt(currentHour) + 24) : currentHour;
+            var currentTime = auxCurrentHour + this.Current.Time.Minute.toString();
 
             // get current day and hub schedule
             var scheduleDayTimes = way.days.find(x => x.day == this.Current.DayOfWeek).schedule;
 
-            // get next hub time
+            // find next hub time
             var timeIndex = scheduleDayTimes.findIndex(x => {
 
                 // add 24hours, if after midnight, to make sums easier
@@ -118,11 +120,38 @@ const App = {
                 return currentTime < scheduleTime;
             });
 
-            // create item in array
-            nextTimes.push(scheduleDayTimes[timeIndex]);
+            // check if time was found
+            if (scheduleDayTimes[timeIndex]) {
+                // create item in array
+                nextTimes.push(scheduleDayTimes[timeIndex]);
+            }
+            else {
+                // next schedule time is tomorrow!
+                var currentDate = this.Current.Date;
+                currentDate.setDate(currentDate.getDate() + 1);
+                var dayOfWeek = currentDate.getDay();
+
+                if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+                    dayOfWeek = 'weekday';
+                }
+                else if (dayOfWeek == 6) {
+                    dayOfWeek = 'saturday';
+                }
+                else if (dayOfWeek == 0) {
+                    dayOfWeek = 'sunday';
+                }
+                var scheduleDayTimes = way.days.find(x => x.day == dayOfWeek).schedule;
+
+                // create item in array
+                nextTimes.push(scheduleDayTimes[0]);
+
+                // ToDo: in friday at 01:55, dayOfWeek is saturday for outbound but weekday for return
+            }
+
+            // add way to array
             nextTimes[i].way = ways[i];
         });
-
+        
         return nextTimes;
 
     },
