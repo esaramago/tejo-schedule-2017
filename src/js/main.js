@@ -9,16 +9,14 @@ const App = {
     Schedules: data.schedules,
 
     Current: {
-        DayOfWeek: '',
         Date: null, // now date (or yesterday)
-        Day: null, // now day
+        DayOfWeek: '',
         Time: {
             Hour: null, // now hour
             Minute: null, // now minute
             Second: null // now second
         },
-        Hub: '', // selected hub
-        Way: '' // selected way
+        Hub: '' // selected hub
     },
     Next: {
         ScheduleTimes: [] // next hour and minute of the two ways
@@ -112,7 +110,6 @@ const App = {
             var timeIndex = scheduleDayTimes.findIndex(x => {
 
                 // add 24hours, if after midnight, to make sums easier
-                //var auxHour = (x.hour < 5) ? x.hour = (parseInt(x.hour) + 24) : x.hour;
                 var auxHour = (x.hour < 5) ? (parseInt(x.hour) + 24) : x.hour;
                 var scheduleTime = auxHour + x.minute;
 
@@ -145,15 +142,18 @@ const App = {
                 // create item in array
                 nextTimes.push(scheduleDayTimes[0]);
 
-                // ToDo: in friday at 01:55, dayOfWeek is saturday for outbound but weekday for return
-            }
+                // Fix: on friday at 01:55, dayOfWeek is saturday for outbound but weekday for return
+                if (this.Current.DayOfWeek !== dayOfWeek) {
+                    nextTimes[i].newDayOfWeek = dayOfWeek;
+                }
 
+            }
+            
             // add way to array
             nextTimes[i].way = ways[i];
         });
         
         return nextTimes;
-
     },
 
 
@@ -238,12 +238,17 @@ const App = {
 
         this.DOM.Title.textContent = `${ways[0]} - ${ways[1]}`; // render title
     },
-    renderTabs(selectedTabIndex) {
+    renderTabs(way, selectedTabIndex) {
+
+        // check if next schedule date is tomorrow
+        if (way) {
+            var next = this.Next.ScheduleTimes.find(x => x.way === way);
+            var dayOfWeek = next.newDayOfWeek ? next.newDayOfWeek : this.Current.DayOfWeek;
+        }
 
         var html = '';
         for (let i in this.Days) {
             var tab = this.Days[i];
-
             // get tab to select
             var isSelected = false;
             if (selectedTabIndex) { // check if selectedTabIndex is passed
@@ -253,7 +258,7 @@ const App = {
             }
             else {
                 // check if is this tab is current day of week
-                if (tab.id === this.Current.DayOfWeek) {
+                if (tab.id === dayOfWeek) {
                     isSelected = true;
                 }
             }
@@ -277,9 +282,10 @@ const App = {
         var html = '';
         var days = this.Schedules.find(x => x.way === way).days;
         var next = this.Next.ScheduleTimes.find(x => x.way === way);
+        var dayOfWeek = next.newDayOfWeek || this.Current.DayOfWeek; // check if next schedule date is tomorrow
 
         for (let i in days) {
-            var isSelected = this.Current.DayOfWeek === days[i].day; // check if today's day of week is the same as this iteration
+            var isSelected = dayOfWeek === days[i].day; // check if today's day of week is the same as this iteration
 
             var schedule = days[i].schedule;
             var scheduleHtml = '';
@@ -321,7 +327,7 @@ const App = {
         var tabIndex = tab.getAttribute("data-index");
         
         // re-render tabs
-        _this.renderTabs(tabIndex);
+        _this.renderTabs(null, tabIndex);
 
         // show selected tab and tabpanel
         document.getElementById("tabpanel" + tabIndex).setAttribute("aria-hidden", false);
@@ -336,7 +342,7 @@ const App = {
     },
     goToSchedulePage(way) {
 
-        this.renderTabs();
+        this.renderTabs(way, null);
         this.renderSchedule(way);
         this.renderTitle(way);
 
@@ -354,7 +360,7 @@ const App = {
 
         this.DOM.Pages.Schedule.classList.remove("is-active");
         this.DOM.Pages.Schedule.setAttribute("aria-hidden", true);
-    },
+    }
 
 
 }
