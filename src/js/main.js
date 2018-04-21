@@ -103,36 +103,44 @@ const App = {
     },
     getNextItineraryScheduleTime(index) {
 
-        // get decimal time, for sums
-        var currentTime = this.Current.Time.Hour + '.' + this.Current.Time.Minute;
-
         // get current day and hub schedule
         var scheduleDay = this.Current.Schedules[index].days.filter(x => x.day == this.Current.Day.id)[0];
 
         // set current day and hub schedule
         this.Current.DaySchedules.push(scheduleDay);
 
+        // get decimal time, for sums
+        var currentTime = this.Current.Time.Hour + this.Current.Time.Minute;
+
         // get next hub time
+        var filled = false;
         for (var i = 0; i < scheduleDay.schedule.length; i++) {
             var time = scheduleDay.schedule[i];
 
             // add 24hours, if after midnight, to make sums easier
-            var scheduleTime = ((time.hour < 5) ? time.hour = (parseInt(time.hour) + 24) : time.hour) + '.' + time.minute;
+            var hour = (time.hour < 5) ? time.hour = (parseInt(time.hour) + 24) : time.hour;
+            var scheduleTime = hour + time.minute;
 
             // find next time in schedule
             if (currentTime < scheduleTime) {
+
                 this.Next.TimeSchedules.push(time);
                 time.isNext = true;
-
+                filled = true;
                 return;
             }
+        }
+
+        // check if Next.TimeSchedules was filled
+        if (!filled) {
+            debugger
         }
 
     },
     renderItineraries() {
 
         var template = "";
-
+        debugger
         var itineraries = [
             {
                 inbound: this.Current.Hub.stations[0].name,

@@ -16,18 +16,19 @@ export function getCurrentDay() {
     var currentHours   = (date.getHours()<10?'0':'') + date.getHours(); // get current hours, with leading zero
     var currentMinutes = (date.getMinutes()<10?'0':'') + date.getMinutes(); // get current minutes, with leading zero
     var currentSeconds = date.getSeconds(); // get current seconds
-    
-    // add 24hours, if after midnight, to make sums easier
-    currentHours = ((currentHours < 5) ? currentHours = (parseInt(currentHours)+24) : currentHours)
+
 
     // fake date (for test purposes)
     //var weekday = 2;
-    //currentHours   = 22;
-    //currentMinutes = 25;
+    //currentHours   = 9;
+    //currentMinutes = 55;
     //currentSeconds = date.getSeconds();
 
 
     // 1.1. Fix current weekday =====================================
+
+    // add 24hours, if after midnight, to make sums easier
+    var currentHours = (currentHours < 5) ? (parseInt(currentHours) + 24) : currentHours;
 
     // check if time is after midnight
     if (currentHours >= 0 && currentHours >= 24) {
@@ -38,7 +39,6 @@ export function getCurrentDay() {
         // if sunday gets a negative value, make it saturday
         if (weekday == -1) {
             weekday = 6;
-
         }
     }
 
