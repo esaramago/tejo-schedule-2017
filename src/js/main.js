@@ -338,7 +338,7 @@ const App = {
         // scroll to current time schedule
         setTimeout(() => {
             document.querySelector(".is-next").scrollIntoView({ block: "center" });
-        }, 300);
+        }, 400);
     },
     goToSchedulePage(way) {
 
