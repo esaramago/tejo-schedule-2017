@@ -1,7 +1,7 @@
 {
   "name": "Horários Tejo",
   "short_name": "HoráriosTejo",
-  "start_url": "https://horariostejo.firebaseapp.com/index.html",
+  "start_url": ".",
   "lang": "pt-PT",
   "description": "Horários das travessias de barco do Tejo.",
   "icons": [

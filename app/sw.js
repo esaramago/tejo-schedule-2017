@@ -1,7 +1,3 @@
-//importScripts('/cache-polyfill.js');
-self.addEventListener('fetch', function (e) {
-
-});
 self.addEventListener('install', function (e) {
     e.waitUntil(
         caches.open('horariostejo').then(function (cache) {
@@ -12,5 +8,10 @@ self.addEventListener('install', function (e) {
                 '/dist/bundle.js'
             ]);
         })
+    );
+});
+self.addEventListener('fetch', function (event) {
+    event.respondWith(
+        caches.match(event.request)
     );
 });
