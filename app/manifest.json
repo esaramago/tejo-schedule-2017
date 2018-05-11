@@ -2,6 +2,7 @@
   "name": "Horários Tejo",
   "short_name": "HoráriosTejo",
   "start_url": ".",
+  "scope": "/",
   "lang": "pt-PT",
   "description": "Horários das travessias de barco do Tejo, operados pela Soflusa.",
   "display": "standalone",
