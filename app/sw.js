@@ -1,17 +1,32 @@
-self.addEventListener('install', function (e) {
+// Credits: https://airhorner.com
+
+const version = "0.1.0";
+const cacheName = `horariostejo-${version}`;
+self.addEventListener('install', e => {
+    const timeStamp = Date.now();
     e.waitUntil(
-        caches.open('horariostejo').then(function (cache) {
+        caches.open(cacheName).then(cache => {
             return cache.addAll([
-                '/',
-                '/index.html',
-                '/dist/main.css',
-                '/dist/bundle.js'
-            ]);
+                `/`,
+                `/index.html?timestamp=${timeStamp}`,
+                `/dist/main.css?timestamp=${timeStamp}`,
+                `/dist/bundle.js?timestamp=${timeStamp}`
+            ])
+                .then(() => self.skipWaiting());
         })
     );
 });
-self.addEventListener('fetch', function (event) {
+
+self.addEventListener('activate', event => {
+    event.waitUntil(self.clients.claim());
+});
+
+self.addEventListener('fetch', event => {
     event.respondWith(
-        caches.match(event.request)
+        caches.open(cacheName)
+            .then(cache => cache.match(event.request, { ignoreSearch: true }))
+            .then(response => {
+                return response || fetch(event.request);
+            })
     );
 });
