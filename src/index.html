@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="utf-8" />
+    <title>Horários tejo</title>
+    <meta name="Description" content="Author: esaramago, Category: Schedule">
+    <link rel="alternate" href="horariostejo.firebaseapp.com" hreflang="pt" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0077CC">
+    <meta name="msapplication-TileColor" content="#0077CC">
+
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- icons -->
+    <meta name="msapplication-TileImage" content="icons/icon-192x192.png">
+    <link rel="icon" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" sizes="96x96" href="icons/icon-96x96.png">
+    <link rel="icon" sizes="192x192" href="icons/icon-192x192.png">
+    <link rel="icon" sizes="512x512" href="icons/icon-512x512.png">
+    
+    <!--<link rel="stylesheet" href="dist/main.css" />-->
+    <!-- inject-css ../app/dist/main.css -->
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118029889-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-118029889-1');
+    </script>
+</head>
+<body>
+    <div class="o-wrapper">
+        <div id="homePage" class="o-page is-active" aria-hidden="false">
+            <header class="c-header">
+                <h1 class="c-heading-1">Horários Tejo</h1>
+            </header>
+            <main class="o-main">
+                <div class="js-itineraries"></div>
+            </main>
+        </div>
+        <div id="schedulePage" class="o-page" aria-hidden="true">
+            <header class="c-header">
+                <button type="button" class="c-button--icon js-goto-home">
+                    <svg class="c-icon" viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
+                        <title>Voltar</title>
+                        <path d="M16,7H3.8l5.6-5.6L8,0L0,8l8,8l1.4-1.4L3.8,9H16V7z" />
+                    </svg>
+                </button>
+                <h1 class="c-heading-1 js-title"></h1>
+            </header>
+            <div class="o-tabs">
+                <ul class="o-tabs__list js-tabs" role="tablist">
+                    <!-- Tabs content -->
+                </ul>
+            </div>
+            <main class="o-main u-full-height">
+                <div class="c-card u-full-height">
+                    <div class="u-relative u-full-height js-tabpanels">
+                        <!-- Tab Panels content -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDleWqIgM6I9AtxjAvztwb1ToG0DfrcoQk",
+            authDomain: "horariostejo.firebaseapp.com",
+            databaseURL: "https://horariostejo.firebaseio.com",
+            projectId: "horariostejo",
+            storageBucket: "",
+            messagingSenderId: "389883290078"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script src="dist/bundle.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                .then(function (registration) {
+                    console.log('Service Worker Registered');
+                });
+
+            navigator.serviceWorker.ready.then(function (registration) {
+                console.log('Service Worker Ready');
+            });
+        }
+    </script>
+</body>
+</html>
