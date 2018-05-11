@@ -3,14 +3,13 @@
 const version = "0.1.0";
 const cacheName = `horariostejo-${version}`;
 self.addEventListener('install', e => {
-    const timeStamp = Date.now();
     e.waitUntil(
         caches.open(cacheName).then(cache => {
             return cache.addAll([
                 `/`,
-                `/index.html?timestamp=${timeStamp}`,
-                `/dist/main.css?timestamp=${timeStamp}`,
-                `/dist/bundle.js?timestamp=${timeStamp}`
+                `/index.html`,
+                `/dist/main.css`,
+                `/dist/bundle.js`
             ])
                 .then(() => self.skipWaiting());
         })
