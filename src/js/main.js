@@ -215,7 +215,7 @@ const App = {
     },
     createNavigation() {
 
-        document.addEventListener('click', () => {
+        document.addEventListener('click', (event) => {
 
             var clickedElement = event.currentTarget.activeElement;
 
