@@ -11,7 +11,7 @@
     "scripts": {
         "build:dev": "gulp",
         "webpack-bundle": "webpack --mode production",
-        "gulp-styles": "gulp styles html",
+        "gulp-styles": "gulp styles",
         "build:prod": "npm run webpack-bundle && npm run gulp-styles"
     },
     "devDependencies": {
